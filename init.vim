@@ -110,22 +110,23 @@ set smarttab
 
 set expandtab "Expand tabs into spaces
 set autoindent "Auto indent
-set tabstop=2 shiftwidth=2
+set tabstop=2 " Tab is 2 spaces
+set softtabstop=2 " Removed spaces
+set shiftwidth=2 " Width of indenting
 
-" 1 tab == 4 spaces
-" autocmd filetype python setlocal
-"     \ shiftwidth=4
-"     \ tabstop=4
-"     \ softtabstop=4
-"     \ fileformat=unix
-
-" 1 tab == 2 spaces
-" autocmd filetype htmldjango setlocal shiftwidth=2 softtabstop=2
+augroup FileOptions
+  autocmd!
+  autocmd filetype python setlocal nowrap " shiftwidth=4 tabstop=4 softtabstop=4
+  " autocmd filetype htmldjango setlocal shiftwidth=2 softtabstop=2
+augroup END
 
 " Wrap
-set nowrap  " Don't wrap long lines
+set wrap  " Wrap long lines
 set listchars=extends:→  " Show arrow if line continues rightwards
 set listchars+=precedes:←  " Show arrow if line continues leftwards
+
+set breakindent         " long lines will wrap with indentation
+set showbreak=↳         " wrap lines with indentation
 
 " Display extra whitespaces
 set list listchars+=tab:»·,trail:·,nbsp:·
@@ -285,10 +286,28 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+Plug 'tpope/vim-endwise'
+" Plug 'rstacruz/vim-closer'
+" Plug 'Townk/vim-autoclose'
+Plug 'jiangmiao/auto-pairs'
+augroup pairs
+  autocmd!
+  autocmd filetype python let b:AutoPairs = AutoPairsDefine({"f'": "'", "r'": "'", "u'": "'", 'f"': '"', 'r"': '"', 'u"': '"'})
+  autocmd filetype htmljinja let b:AutoPairs = AutoPairsDefine({'{%': '%}', '{{': '}}', '{#': '#}'})
+augroup END
+
+" Additional text objects
+Plug 'michaeljsmith/vim-indent-object' " i,I
+Plug 'kana/vim-textobj-user'
+Plug 'bps/vim-textobj-python' " c,f
+
+" Commenter
+Plug 'tpope/vim-commentary'
+
 " Autocomplete, refactoring, linter
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'neoclide/coc-pairs'
+" Plug 'neoclide/coc-pairs'
 Plug 'neoclide/coc-highlight'
 Plug 'neoclide/coc-tsserver'
 Plug 'neoclide/coc-python'
@@ -316,16 +335,16 @@ function! s:check_back_space() abort
 endfunction
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 augroup cocgroup
   autocmd!
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  " Hightlight word under cursor and matches (:CocInstall coc-highlight)
+  autocmd CursorHold * silent call CocActionAsync('highlight')
 augroup end
-" Hightlight word under cursor and matches (:CocInstall coc-highlight)
-autocmd CursorHold * silent call CocActionAsync('highlight')
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -371,12 +390,15 @@ let g:airline_layout = 'powerline'
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
-set hidden
+
+" Buff
+Plug 'vim-scripts/bufkill.vim'
+set nohidden
 nnoremap <C-N> :bnext<CR>
 nnoremap <C-P> :bprev<CR>
 
 " Tab list panel
-Plug 'kien/tabman.vim'
+" Plug 'kien/tabman.vim'
 
 " Autoclose bracket
 " Plug 'Raimondi/delimitMate'
@@ -457,10 +479,11 @@ Plug 'sheerun/vim-polyglot'
 Plug 'mitsuhiko/vim-jinja'
 
 Plug 'nathanaelkane/vim-indent-guides'
-let g:indent_guides_auto_colors = 0
+let g:indent_guides_auto_colors = 1
 let g:indent_guides_enable_on_vim_startup = 0
 let g:indent_guides_start_level = 2
-" let g:indent_guides_guide_size = 1
+let g:indent_guides_guide_size = 1
+let g:indent_guides_soft_pattern = '\s\s'
 let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 
 call plug#end()                       " required
@@ -479,8 +502,8 @@ if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
     hi MatchParen ctermbg=238 ctermfg=black guibg=#444444 guifg=#000000
     hi Error ctermbg=NONE ctermfg=131 guibg=NONE guifg=#af5f5f
     hi pythonexception ctermfg=131 guifg=#af5f5f
-    hi IndentGuidesOdd  ctermbg=NONE guibg=NONE
-    hi IndentGuidesEven ctermbg=235 guibg=#262626
+    " hi IndentGuidesOdd  ctermbg=NONE guibg=NONE
+    " hi IndentGuidesEven ctermbg=235 guibg=#262626
     hi String guifg=#5f875f
     hi pythonimport ctermfg=110 guifg=#84a3e3
     hi Comment guifg=#5f5f5f gui=italic ctermfg=59
