@@ -247,10 +247,10 @@ nnoremap ; ,
 vnoremap ; ,
 nnoremap Ж ,
 vnoremap Ж ,
-nnoremap , :normal! ;<CR>
-vnoremap , :normal! ;<CR>
-nnoremap б :normal! ;<CR>
-vnoremap б :normal! ;<CR>
+nnoremap , ;
+vnoremap , ;
+nnoremap б ;
+vnoremap б ;
 
 " S for split line
 nnoremap S lF<Space>r<CR>
