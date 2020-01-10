@@ -247,9 +247,9 @@ nnoremap ; ,
 vnoremap ; ,
 nnoremap Ж ,
 vnoremap Ж ,
-nnoremap , ;
+nnoremap , :normal! ;<CR>
 vnoremap , ;
-nnoremap б ;
+nnoremap б :normal! ;<CR>
 vnoremap б ;
 
 " S for split line
