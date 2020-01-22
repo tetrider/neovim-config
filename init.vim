@@ -293,7 +293,7 @@ Plug 'jiangmiao/auto-pairs'
 augroup pairs
   autocmd!
   autocmd filetype python let b:AutoPairs = AutoPairsDefine({"f'": "'", "r'": "'", "u'": "'", 'f"': '"', 'r"': '"', 'u"': '"'})
-  autocmd filetype htmljinja let b:AutoPairs = AutoPairsDefine({'{%': '%}', '{{': '}}', '{#': '#}'})
+  autocmd filetype htmljinja,jinja let b:AutoPairs = AutoPairsDefine({'{%': '%}', '{{': '}}', '{#': '#}'})
 augroup END
 
 " Additional text objects
@@ -303,6 +303,10 @@ Plug 'bps/vim-textobj-python' " c,f
 
 " Commenter
 Plug 'tpope/vim-commentary'
+augroup comments
+  autocmd!
+  autocmd filetype htmljinja,jinja,htmldjango setlocal commentstring={#\ %s\ #}
+augroup END
 
 " Autocomplete, refactoring, linter
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
