@@ -474,7 +474,7 @@ Plug 'tpope/vim-repeat'
 " Plug 'AndrewRadev/splitjoin.vim'
 
 " This (neo)vim plugin makes scrolling nice and smooth
-Plug 'psliwka/vim-smoothie'
+" Plug 'psliwka/vim-smoothie'
 
 " Plug 'severin-lemaignan/vim-minimap'
 
@@ -489,6 +489,9 @@ let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_soft_pattern = '\s\s'
 let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
+
+" context
+Plug 'wellle/context.vim'
 
 call plug#end()                       " required
 
